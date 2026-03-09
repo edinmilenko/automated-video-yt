@@ -17,10 +17,10 @@
       background: transparent;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;   /* card anchored to top */
       min-height: 100vh;
       font-family: 'IBM Plex Sans', sans-serif;
-      padding: 40px 24px;
+      padding: 24px 24px 40px;
     }
 
     .card {
@@ -34,7 +34,6 @@
         0 4px 6px rgba(0,0,0,0.4),
         0 12px 40px rgba(0,0,0,0.6),
         0 0 0 1px rgba(255,255,255,0.04);
-      transition: height 0.35s ease;
     }
 
     /* ── Top bar ── */
@@ -123,72 +122,9 @@
     }
 
     .post-paragraph.visible {
-      max-height: 600px; /* generous upper bound */
+      max-height: 600px;
       opacity: 1;
       transform: translateY(0);
-    }
-
-
-    .action-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #818384;
-      background: transparent;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      user-select: none;
-    }
-
-    .action-btn:hover {
-      background: #272729;
-      color: #d7dadc;
-    }
-
-    .action-btn svg {
-      width: 15px;
-      height: 15px;
-      fill: currentColor;
-    }
-
-    .vote-area {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      padding: 3px 8px;
-      border-radius: 20px;
-      background: #272729;
-    }
-
-    .vote-count {
-      font-size: 12px;
-      font-weight: 700;
-      color: #d7dadc;
-      padding: 0 4px;
-    }
-
-    .vote-btn {
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-      color: #818384;
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-
-    .vote-btn.up:hover { color: #ff4500; }
-    .vote-btn.down:hover { color: #7193ff; }
-
-    /* ── Divider between paragraphs ── */
-    .post-paragraph + .post-paragraph.visible {
-      border-top: none;
     }
   </style>
 </head>
@@ -197,33 +133,14 @@
     <div class="card-header">
       <div class="subreddit-icon">r/</div>
       <div class="meta">
-        <div class="subreddit-name">r/NIGGA</div>
-        <div class="post-meta">Posted by <span>u/PENIS</span> · 4 hours ago</div>
+        <div class="subreddit-name">r/AskReddit</div>
+        <div class="post-meta">Posted by <span>u/throwaway_94821</span> · 4 hours ago</div>
       </div>
     </div>
 
     <div class="card-body">
       <h1 id="post-title"></h1>
       <div class="paragraphs-container" id="paragraphs-container"></div>
-    </div>
-
-      <div class="action-btn">
-        <!-- comment bubble -->
-        <svg viewBox="0 0 24 24"><path d="M21 6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3l4 4 4-4h2a2 2 0 0 0 2-2V6z"/></svg>
-        <span id="comment-count">1.2k Comments</span>
-      </div>
-
-      <div class="action-btn">
-        <!-- share arrow -->
-        <svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-7-3.5a3 3 0 0 0 0-1.4l7-3.5A3 3 0 1 0 15 7l-7 3.5a3 3 0 1 0 0 5l7 3.5A3 3 0 1 0 18 16z"/></svg>
-        Share
-      </div>
-
-      <div class="action-btn">
-        <!-- bookmark -->
-        <svg viewBox="0 0 24 24"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
-        Save
-      </div>
     </div>
   </div>
 </body>
