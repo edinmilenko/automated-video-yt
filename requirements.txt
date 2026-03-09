@@ -1,0 +1,11 @@
+# Reddit Shorts Generator — Python dependencies
+# Install with:  pip install -r requirements.txt
+
+edge-tts>=6.1.9
+mutagen>=1.47.0
+playwright>=1.44.0
+moviepy>=1.0.3
+Pillow>=10.0.0
+
+# After pip install, also run:
+#   playwright install chromium

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reddit Post</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans', sans-serif;
+      padding: 40px 24px;
+    }
+
+    .card {
+      background: #1a1a1b;
+      border: 1px solid #343536;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 560px;
+      overflow: hidden;
+      box-shadow:
+        0 4px 6px rgba(0,0,0,0.4),
+        0 12px 40px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(255,255,255,0.04);
+      transition: height 0.35s ease;
+    }
+
+    /* ── Top bar ── */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px 8px;
+      background: #1a1a1b;
+      border-bottom: 1px solid #272729;
+    }
+
+    .subreddit-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4500 0%, #ff6534 60%, #ff8717 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .subreddit-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #d7dadc;
+      letter-spacing: 0.2px;
+    }
+
+    .post-meta {
+      font-size: 10px;
+      color: #818384;
+    }
+
+    .post-meta span {
+      color: #d7dadc;
+      font-weight: 500;
+    }
+
+    /* ── Flair badge ── */
+    .flair {
+      margin-left: auto;
+      background: rgba(255, 69, 0, 0.15);
+      border: 1px solid rgba(255, 69, 0, 0.35);
+      border-radius: 20px;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #ff6534;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* ── Body ── */
+    .card-body {
+      padding: 14px 16px 16px;
+    }
+
+    #post-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #d7dadc;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      letter-spacing: -0.2px;
+    }
+
+    .paragraphs-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-paragraph {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #9c9d9e;
+      letter-spacing: 0.1px;
+
+      /* Expansion animation */
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(4px);
+      transition:
+        max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity    0.35s ease,
+        transform  0.35s ease;
+    }
+
+    .post-paragraph.visible {
+      max-height: 600px; /* generous upper bound */
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Action bar ── */
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px 10px;
+      background: #161617;
+      border-top: 1px solid #272729;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #818384;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+
+    .action-btn:hover {
+      background: #272729;
+      color: #d7dadc;
+    }
+
+    .action-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    .vote-area {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: #272729;
+    }
+
+    .vote-count {
+      font-size: 12px;
+      font-weight: 700;
+      color: #d7dadc;
+      padding: 0 4px;
+    }
+
+    .vote-btn {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      color: #818384;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .vote-btn.up:hover { color: #ff4500; }
+    .vote-btn.down:hover { color: #7193ff; }
+
+    /* ── Divider between paragraphs ── */
+    .post-paragraph + .post-paragraph.visible {
+      border-top: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <div class="subreddit-icon">r/</div>
+      <div class="meta">
+        <div class="subreddit-name">r/AskReddit</div>
+        <div class="post-meta">Posted by <span>u/throwaway_94821</span> · 4 hours ago</div>
+      </div>
+      <div class="flair">🔥 Top Post</div>
+    </div>
+
+    <div class="card-body">
+      <h1 id="post-title"></h1>
+      <div class="paragraphs-container" id="paragraphs-container"></div>
+    </div>
+
+    <div class="card-actions">
+      <div class="vote-area">
+        <div class="vote-btn up">
+          <!-- upvote arrow -->
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 4l8 8H4z"/></svg>
+        </div>
+        <div class="vote-count" id="vote-count">24.7k</div>
+        <div class="vote-btn down">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 20l-8-8h16z"/></svg>
+        </div>
+      </div>
+
+      <div class="action-btn">
+        <!-- comment bubble -->
+        <svg viewBox="0 0 24 24"><path d="M21 6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3l4 4 4-4h2a2 2 0 0 0 2-2V6z"/></svg>
+        <span id="comment-count">1.2k Comments</span>
+      </div>
+
+      <div class="action-btn">
+        <!-- share arrow -->
+        <svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-7-3.5a3 3 0 0 0 0-1.4l7-3.5A3 3 0 1 0 15 7l-7 3.5a3 3 0 1 0 0 5l7 3.5A3 3 0 1 0 18 16z"/></svg>
+        Share
+      </div>
+
+      <div class="action-btn">
+        <!-- bookmark -->
+        <svg viewBox="0 0 24 24"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
+        Save
+      </div>
+    </div>
+  </div>
+</body>
+</html>
