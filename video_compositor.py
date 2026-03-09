@@ -27,8 +27,8 @@ from moviepy.video.fx.all import crop, resize
 # ── Configuration ──────────────────────────────────────────────────────────────
 
 # Final Short dimensions (9:16 portrait)
-SHORT_WIDTH  = 1080
-SHORT_HEIGHT = 1920
+SHORT_WIDTH  = 2160
+SHORT_HEIGHT = 3840
 
 OUTPUT_PATH = Path("output/final_short.mp4")
 
@@ -40,7 +40,7 @@ CARD_VERTICAL_CENTER = 0.42      # vertical center point (0=top, 1=bottom)
 BG_DIM_OPACITY = 0.45
 
 # Export quality
-EXPORT_FPS       = 30
+EXPORT_FPS       = 60
 EXPORT_CODEC     = "libx264"
 EXPORT_AUDIO_CODEC = "aac"
 EXPORT_PRESET    = "fast"
